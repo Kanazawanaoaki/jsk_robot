@@ -81,6 +81,11 @@ class UnitreeService(object):
     def __init__(self):
         self.stand_service = rospy.Service("stand", Trigger, self.stand)
         self.sit_service = rospy.Service("sit", Trigger, self.sit)
+        self.recovery_stand_service = rospy.Service(
+            "recovery_stand", Trigger, self.recovery_stand)
+        self.damping_service = rospy.Service("damp", Trigger, self.damping)
+        self.trot_service = rospy.Service("trot", Trigger, self.trot)
+        self.stair_service = rospy.Service("stair", Trigger, self.stair)
         self.bodypose_sub = rospy.Subscriber("body_pose", Pose, self.body_pose)
 
         self.highlevel_pub = rospy.Publisher("/high_cmd", HighCmd, queue_size=1000)
@@ -94,6 +99,30 @@ class UnitreeService(object):
     def sit(self, req):
         msg = HighCmd()
         msg.mode = 5
+        self.highlevel_pub.publish(msg)
+        return TriggerResponse(success=True)
+
+    def recovery_stand(self, req):
+        msg = HighCmd()
+        msg.mode = 8
+        self.highlevel_pub.publish(msg)
+        return TriggerResponse(success=True)
+
+    def damping(self, req):
+        msg = HighCmd()
+        msg.mode = 7
+        self.highlevel_pub.publish(msg)
+        return TriggerResponse(success=True)
+
+    def trot(self, req):
+        msg = HighCmd()
+        msg.gaitType = 1
+        self.highlevel_pub.publish(msg)
+        return TriggerResponse(success=True)
+
+    def stair(self, req):
+        msg = HighCmd()
+        msg.gaitType = 3
         self.highlevel_pub.publish(msg)
         return TriggerResponse(success=True)
 
