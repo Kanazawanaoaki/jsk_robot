@@ -9,20 +9,29 @@ def callback(data):
     flag = False
     dp_value = None
     rlp_value = None
-    for e in data.status:
+    thre_val = 0
+    s_name_list = []
+    key_list = []
+    value_list = []
+    for s in data.status:
         #EtherCAT Device
-        for v in e.values:
+        for v in s.values:
             if v.key =='Drops':
                 flag = True
-                print(e.name + " Drops: {}".format(v.value))
+                print(s.name + " Drops: {}".format(v.value))
+                if int(v.value) > thre_val:
+                    s_name_list.append(s.name)
+                    value_list.append(v.value)
+                    key_list.append(v.key)
+
         #EtherCAT Master
-        if e.name == 'EtherCAT Master':
-            for v in e.values:
+        if s.name == 'EtherCAT Master':
+            for v in s.values:
                 if v.key =='Dropped Packets':
-                    print(e.name + " Dropped Packets: {}".format(v.value))
+                    print(s.name + " Dropped Packets: {}".format(v.value))
                     dp_value = int(v.value)
                 if v.key =='RX Late Packet':
-                    print(e.name + " RX Late Packet: {}".format(v.value))
+                    print(s.name + " RX Late Packet: {}".format(v.value))
                     rlp_value = int(v.value)
                 if dp_value != None and rlp_value != None:
                     print("EtherCAT Master CRC Errors (Dropped Packets - RX Late Packet): {}".format(dp_value - rlp_value))
@@ -30,6 +39,10 @@ def callback(data):
                     rlp_value = None
 
     if flag:
+        if len(s_name_list) > 0:
+            print("[Devices with errors]")
+            for s_name, key, value in zip(s_name_list, key_list, value_list):
+                print(s_name + " " + key + ": {}".format(value))
         print("--------------------------------------------")
 
 
