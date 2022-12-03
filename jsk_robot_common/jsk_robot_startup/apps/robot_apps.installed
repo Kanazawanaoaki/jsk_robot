@@ -9,3 +9,7 @@ apps:
     display: Volume reset
   - app: jsk_robot_startup/volume_zero
     display: Volume zero
+  - app: jsk_robot_startup/roseus_resume_interrupt
+    display: Interrupt
+  - app: jsk_robot_startup/roseus_resume_resume
+    display: Resume
