@@ -88,8 +88,8 @@
     version: master
 - git:
     local-name: jsk-ros-pkg/jsk_robot
-    uri: https://github.com/jsk-ros-pkg/jsk_robot.git
-    version: develop/pr2-noetic 
+    uri: https://github.com/Kanazawanaoaki/jsk_robot.git
+    version: add-check-base-scan-node-in-pr1040
 - git:
     local-name: jsk-ros-pkg/jsk_roseus
     uri: https://github.com/knorth55/jsk_roseus.git
